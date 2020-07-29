@@ -55,6 +55,48 @@ class socialMask(nn.Module):
         action_scores = self.affine3(x)
         return F.softmax(action_scores, dim=1)
 
+
+class Actor(nn.Module):
+    def __init__(self,action_dim,state_dim):
+        super(Actor,self).__init__()
+        self.Linear1 = nn.Linear(state_dim,128)
+        # self.Dropout1 = nn.Dropout(p=0.3)
+        self.Linear2 = nn.Linear(128,action_dim)
+
+    def forward(self,x):
+        x = self.Linear1(x)
+        # x = self.Dropout1(x)
+        x = F.relu(x)
+        x = self.Linear2(x)
+        return F.softmax(x)
+
+class Critic(nn.Module):
+    def __init__(self,state_dim):
+        super(Critic,self).__init__()
+        self.Linear1 = nn.Linear(state_dim, 128)
+        # self.Dropout1 = nn.Dropout(p=0.3)
+        self.Linear2 = nn.Linear(128, 1)
+
+    def forward(self,x):
+        x = self.Linear1(x)
+        # x = self.Dropout1(x)
+        x = F.relu(x)
+        x = self.Linear2(x)
+        return x
+
+class Centralised_Critic(nn.Module):
+    def __init__(self,state_dim):
+        super(Centralised_Critic,self).__init__()
+        self.Linear1 = nn.Linear(state_dim*2,128)
+        self.Linear2 = nn.Linear(128,1)
+
+    def forward(self,x):
+        x = self.Linear1(x)
+        x = F.relu(x)
+        x = self.Linear2(x)
+        return x
+
+
 if __name__ == "__main__":
     model_name = "pg_social"
     file_name  = "train_para/"+model_name

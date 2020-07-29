@@ -6,7 +6,6 @@ import sys
 #sys.path.append("utils")
 import os
 #os.chdir("utils")
-print("os getcwd... ",os.getcwd())
 import gym
 import gym.envs.registration
 import gym.spaces
